@@ -5,9 +5,14 @@ your own **OpenAI-compatible** LLM (OpenRouter, OpenAI, Groq, Ollama, LM Studio,
 Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
 
 ## Features
-- Select text → a floating ✨ button appears → choose **Fix grammar**, **Polish**,
-  or **Rewrite as…** (Friendly / Formal / Casual / Professional / Concise / your own).
-- Result shown in a panel with a **word-level before/after diff**.
+- **Two ways to use:**
+  - **In-page** — select text → a floating ✨ button appears → pick an action.
+  - **Toolbar popup** — click the extension icon → grab the page selection (or
+    paste any text) → pick an action. A reliable fallback when the floating button
+    doesn't show (e.g. some custom editors).
+- Actions: **Fix grammar**, **Polish**, or **Rewrite as…**
+  (Friendly / Formal / Casual / Professional / Concise / your own presets).
+- Result shown with a **word-level before/after diff**.
 - **Apply** replaces the selection inline (where the field allows), **Copy** always
   works as a fallback, **Regenerate** re-runs.
 - Works only on the selected text — never grabs the whole field.
@@ -18,14 +23,23 @@ Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
 1. Open `chrome://extensions`.
 2. Turn on **Developer mode** (top-right).
 3. Click **Load unpacked** and select this folder (`chrome-languange-helper`).
-4. Click the extension's **Details → Extension options** (or click the toolbar icon).
+4. Open the settings: click the toolbar icon → the **⚙** button (or right-click the
+   icon → **Options**).
 5. Pick a **Preset** (default: OpenRouter), paste your **API key**, set the **model**,
    click **Save** (approve the host-permission prompt), then **Test connection**.
 
 ## Use
+**In-page (floating button):**
 1. On any web page, select some text in a text box, comment field, editor, etc.
 2. Click the floating ✨ button near your selection.
 3. Choose an action. Review the diff, then **Apply** or **Copy**.
+
+**Toolbar popup (fallback):**
+1. Click the extension icon in the toolbar.
+2. Click **Grab selection** to pull the highlighted text from the page, or paste
+   any text into the box.
+3. Choose an action, then **Apply to page** (replaces the live selection) or **Copy**.
+   Apply falls back to Copy automatically when the field can't be edited inline.
 
 ## Providers
 Store the Base URL **including** its version segment:
@@ -74,6 +88,7 @@ manifest.json          MV3 manifest
 background.js           service worker — holds key, calls LLM, streams back
 content.js             floating UI (shadow DOM), selection, apply
 content.css            widget styles (injected into the shadow root)
+popup.html/js/css      toolbar popup — grab/paste, run actions, copy/apply
 options.html/js/css    settings: profiles, tones, test connection
 utils/                 storage, providers, prompts, llm, selection, replace, diff
 vendor/                textarea-caret-position, insert-text (MIT, vendored)
