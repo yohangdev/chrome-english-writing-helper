@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>English Writing Helper — Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>English Writing Helper</h1>
+      <p class="sub">
+        Correct grammar, polish, and restyle the text you select — using your own
+        OpenAI-compatible LLM.
+      </p>
+
+      <section class="card">
+        <h2>Provider</h2>
+
+        <label class="row">
+          <span>Active profile</span>
+          <select id="profileSelect"></select>
+        </label>
+        <div class="btnrow">
+          <button id="newProfile" type="button" class="ghost">+ New</button>
+          <button id="deleteProfile" type="button" class="ghost danger">Delete</button>
+        </div>
+
+        <label class="row">
+          <span>Preset</span>
+          <select id="preset"></select>
+        </label>
+        <label class="row">
+          <span>Name</span>
+          <input id="name" type="text" placeholder="My provider" />
+        </label>
+        <label class="row">
+          <span>Base URL</span>
+          <input id="baseURL" type="text" placeholder="https://openrouter.ai/api/v1" />
+        </label>
+        <label class="row">
+          <span>API key</span>
+          <span class="keywrap">
+            <input id="apiKey" type="password" placeholder="sk-…" autocomplete="off" />
+            <button id="toggleKey" type="button" class="ghost small">Show</button>
+          </span>
+        </label>
+        <label class="row">
+          <span>Model</span>
+          <input id="model" type="text" placeholder="openai/gpt-4o-mini" />
+        </label>
+        <label class="row">
+          <span>Auth style</span>
+          <select id="authStyle">
+            <option value="bearer">Bearer (OpenAI-compatible)</option>
+            <option value="azure-api-key">Azure (api-key header)</option>
+          </select>
+        </label>
+        <label class="row" id="azureRow" hidden>
+          <span>Azure api-version</span>
+          <input id="azureApiVersion" type="text" placeholder="2025-04-01-preview" />
+        </label>
+        <label class="row">
+          <span>Temperature <em>(blank = auto)</em></span>
+          <input id="temperature" type="number" step="0.1" min="0" max="2" placeholder="auto" />
+        </label>
+
+        <div class="btnrow">
+          <button id="save" type="button" class="primary">Save</button>
+          <button id="test" type="button" class="ghost">Test connection</button>
+        </div>
+        <p id="status" class="status"></p>
+      </section>
+
+      <section class="card">
+        <h2>Style presets</h2>
+        <p class="hint">These appear under “Rewrite as…”.</p>
+        <ul id="tones" class="tones"></ul>
+        <div class="btnrow">
+          <input id="toneName" type="text" placeholder="Tone name (e.g. Confident)" />
+          <input id="toneDesc" type="text" placeholder="Short description (optional)" />
+          <button id="addTone" type="button" class="ghost">Add</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Behavior</h2>
+        <label class="checkrow">
+          <input id="streaming" type="checkbox" />
+          <span>Stream results live (recommended)</span>
+        </label>
+      </section>
+
+      <section class="card note">
+        <h2>Privacy</h2>
+        <p>
+          Text you select is sent to the provider you configure above only when you
+          explicitly choose an action. Your API key is stored locally
+          (<code>chrome.storage.local</code>) and is never synced or exposed to web
+          pages. No storage is encrypted at rest — anyone with access to this
+          browser profile can read the key.
+        </p>
+      </section>
+    </main>
+
+    <script src="utils/storage.js"></script>
+    <script src="utils/providers.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

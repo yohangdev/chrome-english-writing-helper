@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Writing Helper — test page</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+        line-height: 1.5;
+        color: #1a1a1a;
+      }
+      h2 { margin-top: 32px; }
+      textarea, input {
+        width: 100%;
+        font-size: 15px;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+      textarea { height: 120px; }
+      .editor {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        min-height: 100px;
+        font-size: 15px;
+      }
+      .hint { color: #666; font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <h1>English Writing Helper — test page</h1>
+    <p class="hint">
+      Select some text in any field below, click the floating ✨ button, and try
+      Fix grammar / Polish / Rewrite. Requires the extension loaded and a provider
+      configured in its options.
+    </p>
+
+    <h2>1. Plain &lt;textarea&gt;</h2>
+    <textarea>
+i has went to the store yesterday and buyed some milk but they was closed so i comed back home very sad and tired.</textarea>
+
+    <h2>2. Plain &lt;input&gt;</h2>
+    <input type="text" value="me and him is going to the meeting tomorow" />
+
+    <h2>3. contenteditable (rich editor style)</h2>
+    <div class="editor" contenteditable="true">
+      Thank you for you email. I will get back at you as soon as possibel regarding
+      the project timelines and the deliverabels we discussed.
+    </div>
+
+    <p class="hint" style="margin-top: 32px;">
+      Select only part of a sentence to confirm the tool edits just the selection,
+      not the whole field.
+    </p>
+  </body>
+</html>

@@ -1,0 +1,242 @@
+/* Styles injected INTO the extension's shadow root (isolated from the page). */
+
+:host {
+  all: initial;
+}
+
+/* Our display:flex rules would otherwise override the UA [hidden] rule, so the
+   `hidden` attribute must win explicitly. */
+[hidden] {
+  display: none !important;
+}
+
+.lh-btn,
+.lh-menu,
+.lh-panel {
+  position: fixed;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  color: #1a1a1a;
+}
+
+/* Floating trigger button */
+.lh-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 16px;
+  line-height: 32px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  padding: 0;
+}
+.lh-btn:hover {
+  background: #4338ca;
+}
+
+/* Action menu */
+.lh-menu {
+  min-width: 180px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lh-menu-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+.lh-menu-item:hover {
+  background: #f3f4f6;
+}
+.lh-sub-toggle {
+  font-weight: 600;
+}
+.lh-tones {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 8px;
+  border-left: 2px solid #eef2ff;
+  margin-left: 6px;
+}
+
+/* Result panel */
+.lh-panel {
+  width: 380px;
+  max-width: calc(100vw - 24px);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.lh-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border-bottom: 1px solid #eef0f3;
+}
+.lh-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+.lh-spacer {
+  flex: 1;
+}
+.lh-x {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.lh-x:hover {
+  background: #eef0f3;
+}
+.lh-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lh-legend {
+  display: flex;
+  gap: 8px;
+  font-size: 11px;
+}
+.lh-chip {
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.lh-result {
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 8px;
+  background: #fcfcfd;
+  border: 1px solid #eef0f3;
+  border-radius: 8px;
+  min-height: 40px;
+}
+.lh-ins {
+  background: #dcfce7;
+  color: #166534;
+  border-radius: 3px;
+}
+.lh-del {
+  background: #fee2e2;
+  color: #991b1b;
+  text-decoration: line-through;
+  border-radius: 3px;
+}
+.lh-status {
+  font-size: 12px;
+  color: #6b7280;
+  min-height: 14px;
+  white-space: pre-wrap;
+}
+.lh-actions {
+  display: flex;
+  gap: 6px;
+  padding: 10px 12px;
+  border-top: 1px solid #eef0f3;
+  background: #fafafa;
+}
+.lh-act {
+  flex: 1;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 8px;
+  padding: 7px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #1a1a1a;
+}
+.lh-act:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+.lh-act[data-act='apply'] {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #fff;
+  font-weight: 600;
+}
+.lh-act[data-act='apply']:hover:not(:disabled) {
+  background: #4338ca;
+}
+.lh-act:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .lh-menu,
+  .lh-panel {
+    background: #1f2430;
+    border-color: #333a49;
+    color: #e5e7eb;
+  }
+  .lh-menu-item {
+    color: #e5e7eb;
+  }
+  .lh-menu-item:hover {
+    background: #2a3140;
+  }
+  .lh-head,
+  .lh-actions {
+    background: #232936;
+    border-color: #333a49;
+  }
+  .lh-result {
+    background: #171b24;
+    border-color: #333a49;
+    color: #e5e7eb;
+  }
+  .lh-act {
+    background: #262c38;
+    border-color: #3a4252;
+    color: #e5e7eb;
+  }
+  .lh-act:hover:not(:disabled) {
+    background: #2f3646;
+  }
+  .lh-tones {
+    border-left-color: #3a4252;
+  }
+  .lh-ins {
+    background: #14532d;
+    color: #bbf7d0;
+  }
+  .lh-del {
+    background: #7f1d1d;
+    color: #fecaca;
+  }
+}
