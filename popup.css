@@ -184,11 +184,21 @@ textarea {
   background: var(--bg);
   color: var(--text);
 }
+.ghost {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
 .ghost:hover:not(:disabled) {
   background: rgba(127, 127, 127, 0.12);
 }
 .small {
-  padding: 4px 8px;
+  padding: 4px 10px;
   font-size: 11px;
 }
 .primary {
