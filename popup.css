@@ -201,13 +201,15 @@ textarea {
   padding: 4px 10px;
   font-size: 11px;
 }
-.primary {
+/* Use `button.primary` so it beats the `.actions button` base rule
+   (equal specificity, wins on source order) for color/background/border. */
+button.primary {
   background: var(--primary);
   border-color: var(--primary);
   color: #fff;
   font-weight: 600;
 }
-.primary:hover:not(:disabled) {
+button.primary:hover:not(:disabled) {
   background: var(--primary-hover);
 }
 button:disabled {
