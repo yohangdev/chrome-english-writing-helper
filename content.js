@@ -383,6 +383,24 @@
 
   // ---- Global listeners ----------------------------------------------------
 
+  // Messages from the toolbar popup (fallback UI).
+  chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+    if (!msg) return;
+    if (msg.type === 'lh-capture') {
+      const d = LH.selection.capture();
+      if (d) desc = d;
+      sendResponse({ text: d ? d.text : '' });
+      return; // sync response
+    }
+    if (msg.type === 'lh-apply') {
+      (async () => {
+        const res = desc ? await LH.replace.applyReplacement(desc, msg.text) : { ok: false };
+        sendResponse(res);
+      })();
+      return true; // async response
+    }
+  });
+
   document.addEventListener('mouseup', onSelectionActivity, true);
   document.addEventListener('keyup', onSelectionActivity, true);
   document.addEventListener('mousedown', (e) => {

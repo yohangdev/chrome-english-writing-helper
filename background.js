@@ -123,6 +123,3 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   })();
   return true; // keep the message channel open for the async response
 });
-
-// Clicking the toolbar icon opens options.
-chrome.action.onClicked.addListener(() => chrome.runtime.openOptionsPage());

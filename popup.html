@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>English Writing Helper</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="head">
+      <span class="title">Writing Helper</span>
+      <button id="options" type="button" class="icon" title="Settings">⚙</button>
+    </header>
+
+    <main class="body">
+      <div class="inputrow">
+        <label for="input">Text</label>
+        <button id="grab" type="button" class="ghost small">Grab selection</button>
+      </div>
+      <textarea id="input" placeholder="Paste text here, or use “Grab selection” to pull the highlighted text from the page."></textarea>
+
+      <div class="modes">
+        <button id="grammar" type="button" class="mode">Fix grammar</button>
+        <button id="polish" type="button" class="mode">Polish</button>
+      </div>
+      <div class="rewriterow">
+        <select id="tone" title="Tone"></select>
+        <button id="rewrite" type="button" class="mode">Rewrite</button>
+      </div>
+
+      <div class="legend">
+        <span class="chip ins">added</span><span class="chip del">removed</span>
+      </div>
+      <div id="result" class="result" aria-live="polite"></div>
+      <div id="status" class="status"></div>
+
+      <div class="actions">
+        <button id="apply" type="button" class="primary" disabled>Apply to page</button>
+        <button id="copy" type="button" class="ghost" disabled>Copy</button>
+      </div>
+    </main>
+
+    <script src="utils/storage.js"></script>
+    <script src="utils/diff.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

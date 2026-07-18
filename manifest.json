@@ -33,6 +33,7 @@
   ],
   "options_page": "options.html",
   "action": {
-    "default_title": "English Writing Helper — open settings"
+    "default_title": "English Writing Helper",
+    "default_popup": "popup.html"
   }
 }
