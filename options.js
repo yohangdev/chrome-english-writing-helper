@@ -215,6 +215,7 @@
     renderProfileSelect();
     renderForm();
     renderTones();
+    $('version').textContent = 'v' + chrome.runtime.getManifest().version;
 
     $('profileSelect').addEventListener('change', (e) => {
       currentId = e.target.value;

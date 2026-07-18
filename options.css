@@ -192,3 +192,18 @@ code {
   border-radius: 4px;
   font-size: 12px;
 }
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.footer a {
+  color: var(--muted);
+}
+.footer a:hover {
+  color: var(--primary);
+}
