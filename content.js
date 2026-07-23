@@ -161,7 +161,14 @@
     node.hidden = false;
     node.style.visibility = 'hidden';
     const w = node.offsetWidth || 200;
-    const h = node.offsetHeight || 120;
+
+    // For panels, use viewport-constrained height to prevent overflow during streaming
+    let h = node.offsetHeight || 120;
+    if (node.classList.contains('lh-panel')) {
+      // Account for worst-case: panel could grow to max-height during streaming
+      h = Math.min(400, window.innerHeight - 100);  // 400px max, keeps 100px margin from edges
+    }
+
     const gap = 6;
 
     // Calculate horizontal position

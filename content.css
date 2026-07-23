@@ -81,6 +81,7 @@
 .lh-panel {
   width: 380px;
   max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 100px);
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -122,6 +123,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow-y: auto;
+  flex-shrink: 1;
+  min-height: 0;
 }
 .lh-legend {
   display: flex;
