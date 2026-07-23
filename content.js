@@ -162,11 +162,28 @@
     node.style.visibility = 'hidden';
     const w = node.offsetWidth || 200;
     const h = node.offsetHeight || 120;
-    let left = Math.min(anchor.left, window.innerWidth - w - 8);
-    let top = anchor.bottom + 6;
-    if (top + h > window.innerHeight) top = Math.max(8, anchor.top - h - 6);
-    node.style.left = Math.max(8, left) + 'px';
-    node.style.top = Math.max(8, top) + 'px';
+    const gap = 6;
+
+    // Calculate horizontal position
+    let left = anchor.left + gap;
+    // If would overflow right edge, try left-aligning to anchor's right edge
+    if (left + w > window.innerWidth - 8) {
+      left = Math.max(8, anchor.right - w - gap);
+    }
+    // If still overflowing, clamp to right edge
+    left = Math.min(left, window.innerWidth - w - 8);
+    // Ensure minimum left margin
+    left = Math.max(8, left);
+
+    // Calculate vertical position
+    let top = anchor.bottom + gap;
+    // If would overflow bottom edge, flip to top
+    if (top + h > window.innerHeight - 8) {
+      top = Math.max(8, anchor.top - h - gap);
+    }
+
+    node.style.left = left + 'px';
+    node.style.top = top + 'px';
     node.style.visibility = 'visible';
   }
 
