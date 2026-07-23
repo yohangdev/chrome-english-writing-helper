@@ -12,7 +12,8 @@ Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
     doesn't show (e.g. some custom editors).
 - Actions: **Fix grammar**, **Polish**, or **Rewrite as…**
   (Friendly / Formal / Casual / Professional / Concise / your own presets).
-- Result shown with a **word-level before/after diff**.
+- Result shown in a **centered modal** with a **word-level before/after diff** and dark
+  backdrop for better focus.
 - **Apply** replaces the selection inline (where the field allows), **Copy** always
   works as a fallback, **Regenerate** re-runs.
 - Works only on the selected text — never grabs the whole field.
@@ -32,7 +33,10 @@ Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
 **In-page (floating button):**
 1. On any web page, select some text in a text box, comment field, editor, etc.
 2. Click the floating ✨ button near your selection.
-3. Choose an action. Review the diff, then **Apply** or **Copy**.
+3. Choose an action.
+4. A centered modal appears with the result and a before/after diff.
+5. Click **Apply** to replace the selection, **Copy** to copy to clipboard, or click
+   outside the modal to dismiss it.
 
 **Toolbar popup (fallback):**
 1. Click the extension icon in the toolbar.
