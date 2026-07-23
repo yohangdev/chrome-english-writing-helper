@@ -36,6 +36,11 @@
     link.href = chrome.runtime.getURL('content.css');
     shadow.appendChild(link);
 
+    // Backdrop overlay
+    const backdrop = el('div', 'lh-backdrop');
+    backdrop.hidden = true;
+    shadow.appendChild(backdrop);
+
     // Floating button
     btn = el('button', 'lh-btn');
     btn.type = 'button';
@@ -60,6 +65,8 @@
     for (const node of [btn, menu, panel]) {
       node.addEventListener('mousedown', (e) => e.preventDefault());
     }
+    // Click backdrop to close panel
+    backdrop.addEventListener('click', closePanel);
     btn.addEventListener('click', onBtnClick);
   }
 
@@ -251,6 +258,10 @@
   // ---- Panel ---------------------------------------------------------------
 
   function openPanel(mode, tone) {
+    // Show backdrop
+    const backdrop = shadow.querySelector('.lh-backdrop');
+    if (backdrop) backdrop.hidden = false;
+
     panel.innerHTML = '';
     const head = el('div', 'lh-head');
     const title = el('span', 'lh-title');
@@ -394,6 +405,10 @@
     panel.innerHTML = '';
     cleanupPort();
     state = null;
+
+    // Hide backdrop
+    const backdrop = shadow.querySelector('.lh-backdrop');
+    if (backdrop) backdrop.hidden = true;
   }
 
   async function copyToClipboard(text) {
