@@ -281,9 +281,22 @@
 
     panel.append(head, body, actions);
     panel.hidden = false;
-    positionNear(panel, btn.hidden ? { left: 40, top: 40, bottom: 40 } : btn.getBoundingClientRect());
-    // Re-anchor near the selection instead of the (now hidden) button.
-    if (desc && desc.rect) positionNear(panel, { left: desc.rect.left, top: desc.rect.top, bottom: desc.rect.bottom });
+    centerInViewport(panel);
+  }
+
+  function centerInViewport(node) {
+    node.hidden = false;
+    node.style.visibility = 'hidden';
+    const w = node.offsetWidth || 600;
+    const h = node.offsetHeight || 400;
+
+    // Center in viewport with margins
+    const left = Math.max(16, Math.floor((window.innerWidth - w) / 2));
+    const top = Math.max(16, Math.floor((window.innerHeight - h) / 2));
+
+    node.style.left = left + 'px';
+    node.style.top = top + 'px';
+    node.style.visibility = 'visible';
   }
 
   function actionBtn(label, act, handler) {

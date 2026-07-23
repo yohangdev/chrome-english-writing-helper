@@ -79,8 +79,8 @@
 
 /* Result panel */
 .lh-panel {
-  width: 380px;
-  max-width: calc(100vw - 24px);
+  width: 600px;
+  max-width: calc(100vw - 32px);
   max-height: calc(100vh - 100px);
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -141,7 +141,7 @@
   line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-word;
-  max-height: 240px;
+  max-height: 400px;
   overflow-y: auto;
   padding: 8px;
   background: #fcfcfd;
