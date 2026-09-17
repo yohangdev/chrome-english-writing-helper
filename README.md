@@ -13,7 +13,7 @@ Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
 - Actions: **Fix grammar** and **Rewrite** from the in-page menu. The Rewrite modal
   includes tone selection (Friendly / Formal / Casual / Professional / Concise / your
   own presets); changing the tone automatically regenerates the result. The toolbar
-  popup also provides **Polish** and **Rewrite**.
+  popup also provides the same **Fix grammar** and **Rewrite** actions.
 - Result shown in a **centered modal** with a **word-level before/after diff** and dark
   backdrop for better focus.
 - **Apply** replaces the selection inline (where the field allows), **Copy** always

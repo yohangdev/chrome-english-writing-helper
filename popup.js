@@ -41,7 +41,6 @@
   function wire() {
     $('grab').addEventListener('click', grab);
     $('grammar').addEventListener('click', () => run('grammar'));
-    $('polish').addEventListener('click', () => run('polish'));
     $('rewrite').addEventListener('click', () => run('style', $('tone').value));
     $('copy').addEventListener('click', onCopy);
     $('apply').addEventListener('click', onApply);
@@ -178,7 +177,7 @@
   }
 
   function setBusy(busy) {
-    for (const id of ['grammar', 'polish', 'rewrite', 'grab']) $(id).disabled = busy;
+    for (const id of ['grammar', 'rewrite', 'grab']) $(id).disabled = busy;
     if (busy) {
       $('copy').disabled = true;
       $('apply').disabled = true;
