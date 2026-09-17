@@ -141,7 +141,7 @@
     const settings = await LH.storage.getSettings();
 
     menu.appendChild(menuItem('Fix grammar', () => run('grammar')));
-    menu.appendChild(menuItem('Polish', () => run('polish', settings.lastTone, settings.tones)));
+    menu.appendChild(menuItem('Rewrite', () => run('style', settings.lastTone, settings.tones)));
   }
 
   function menuItem(label, onClick, title) {
@@ -201,8 +201,8 @@
     state = { mode, tone, tones, resultText: '', streaming: true };
     openPanel(mode, tone, tones);
     setStatus(tone
-      ? `${mode === 'polish' ? 'Polishing' : 'Rewriting'} (${tone})…`
-      : mode === 'grammar' ? 'Fixing grammar…' : 'Polishing…');
+      ? `Rewriting (${tone})…`
+      : mode === 'grammar' ? 'Fixing grammar…' : 'Rewriting…');
     setResultPlain('');
     setActionsEnabled(false);
 
@@ -273,12 +273,12 @@
     head.append(title, spacer, close);
 
     const body = el('div', 'lh-body');
-    if (mode === 'polish') {
+    if (mode === 'style') {
       const toneRow = el('div', 'lh-tone-row');
       const toneLabel = el('label');
       toneLabel.textContent = 'Tone';
       const toneSelect = el('select', 'lh-tone-select');
-      toneSelect.title = 'Tone used when polishing or regenerating';
+      toneSelect.title = 'Tone used when rewriting or regenerating';
       for (const t of (tones || LH.storage.DEFAULT_TONES)) {
         const option = document.createElement('option');
         option.value = t.name;

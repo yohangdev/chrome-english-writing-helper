@@ -10,10 +10,10 @@ Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
   - **Toolbar popup** — click the extension icon → grab the page selection (or
     paste any text) → pick an action. A reliable fallback when the floating button
     doesn't show (e.g. some custom editors).
-- Actions: **Fix grammar** and **Polish** from the in-page menu. The Polish modal
+- Actions: **Fix grammar** and **Rewrite** from the in-page menu. The Rewrite modal
   includes tone selection (Friendly / Formal / Casual / Professional / Concise / your
   own presets); changing the tone automatically regenerates the result. The toolbar
-  popup also provides **Rewrite as…**.
+  popup also provides **Polish** and **Rewrite**.
 - Result shown in a **centered modal** with a **word-level before/after diff** and dark
   backdrop for better focus.
 - **Apply** replaces the selection inline (where the field allows), **Copy** always
@@ -37,7 +37,7 @@ Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
 2. Click the floating ✨ button near your selection.
 3. Choose an action.
 4. A centered modal appears with the result and a before/after diff.
-5. For **Polish**, select a tone in the modal to automatically regenerate the result.
+5. For **Rewrite**, select a tone in the modal to automatically regenerate the result.
 6. Click **Apply** to replace the selection, **Copy** to copy to clipboard, or click
    outside the modal to dismiss it. If a connection fails, use **Retry**.
 
