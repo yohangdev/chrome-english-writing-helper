@@ -10,8 +10,10 @@ Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
   - **Toolbar popup** — click the extension icon → grab the page selection (or
     paste any text) → pick an action. A reliable fallback when the floating button
     doesn't show (e.g. some custom editors).
-- Actions: **Fix grammar**, **Polish**, or **Rewrite as…**
-  (Friendly / Formal / Casual / Professional / Concise / your own presets).
+- Actions: **Fix grammar** and **Polish** from the in-page menu. The Polish modal
+  includes tone selection (Friendly / Formal / Casual / Professional / Concise / your
+  own presets); changing the tone automatically regenerates the result. The toolbar
+  popup also provides **Rewrite as…**.
 - Result shown in a **centered modal** with a **word-level before/after diff** and dark
   backdrop for better focus.
 - **Apply** replaces the selection inline (where the field allows), **Copy** always
@@ -35,15 +37,17 @@ Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
 2. Click the floating ✨ button near your selection.
 3. Choose an action.
 4. A centered modal appears with the result and a before/after diff.
-5. Click **Apply** to replace the selection, **Copy** to copy to clipboard, or click
-   outside the modal to dismiss it.
+5. For **Polish**, select a tone in the modal to automatically regenerate the result.
+6. Click **Apply** to replace the selection, **Copy** to copy to clipboard, or click
+   outside the modal to dismiss it. If a connection fails, use **Retry**.
 
 **Toolbar popup (fallback):**
 1. Click the extension icon in the toolbar.
 2. Click **Grab selection** to pull the highlighted text from the page, or paste
    any text into the box.
 3. Choose an action, then **Apply to page** (replaces the live selection) or **Copy**.
-   Apply falls back to Copy automatically when the field can't be edited inline.
+   Use the tone selector with **Rewrite**, or click **Regenerate** after changing the
+   tone. Apply falls back to Copy automatically when the field can't be edited inline.
 
 ## Providers
 Store the Base URL **including** its version segment:
