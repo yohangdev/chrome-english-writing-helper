@@ -219,8 +219,10 @@
     port.onMessage.addListener(onPortMessage);
     port.onDisconnect.addListener(() => {
       if (state && state.streaming) {
-        setStatus('Connection closed.');
         state.streaming = false;
+        setStatus('Connection closed. Try again.');
+        // Keep the panel usable even when the worker/network drops the port.
+        setActionsEnabled(false, true);
       }
     });
     port.postMessage({ type: 'run', mode, tone, text: desc.text });
@@ -243,7 +245,9 @@
       state.streaming = false;
       setStatus(msg.error || 'Error.');
       if (!msg.aborted) setResultPlain(state.resultText || '');
-      setActionsEnabled(!!state.resultText);
+      // A failed request may not have produced any text, so still offer a
+      // retry instead of leaving every useful action disabled.
+      setActionsEnabled(!!state.resultText, !msg.aborted);
       cleanupPort();
     }
   }
@@ -354,16 +358,19 @@
     }
   }
 
-  function setActionsEnabled(enabled) {
+  function setActionsEnabled(enabled, retryAvailable = false) {
     const apply = q('.lh-act[data-act="apply"]');
     const copy = q('.lh-act[data-act="copy"]');
     const regen = q('.lh-act[data-act="regen"]');
     const cancel = q('.lh-act[data-act="cancel"]');
     if (apply) apply.disabled = !enabled;
     if (copy) copy.disabled = !enabled;
-    if (regen) regen.disabled = !enabled;
+    if (regen) {
+      regen.disabled = !(enabled || retryAvailable);
+      regen.textContent = retryAvailable ? 'Retry' : 'Regenerate';
+    }
     // Cancel is useful only while streaming.
-    if (cancel) cancel.textContent = enabled ? 'Close' : 'Cancel';
+    if (cancel) cancel.textContent = enabled || retryAvailable ? 'Close' : 'Cancel';
   }
 
   async function onApply() {
