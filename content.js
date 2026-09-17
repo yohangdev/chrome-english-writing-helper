@@ -63,7 +63,14 @@
 
     // Keep the page selection alive: never let clicks on our UI blur the target.
     for (const node of [btn, menu, panel]) {
-      node.addEventListener('mousedown', (e) => e.preventDefault());
+      node.addEventListener('mousedown', (e) => {
+        // Native selects need the default mousedown to open their dropdown.
+        // Other controls keep the page selection alive while interacting with
+        // the extension UI.
+        const path = e.composedPath ? e.composedPath() : [];
+        if (path.some((item) => item && item.tagName === 'SELECT')) return;
+        e.preventDefault();
+      });
     }
     // Click backdrop to close panel
     backdrop.addEventListener('click', closePanel);
@@ -134,22 +141,7 @@
     const settings = await LH.storage.getSettings();
 
     menu.appendChild(menuItem('Fix grammar', () => run('grammar')));
-    menu.appendChild(menuItem('Polish', () => run('polish')));
-
-    const toggle = menuItem('Rewrite as ▸', () => {
-      tones.hidden = !tones.hidden;
-    });
-    toggle.classList.add('lh-sub-toggle');
-    menu.appendChild(toggle);
-
-    const tones = el('div', 'lh-tones');
-    tones.hidden = true;
-    for (const t of settings.tones) {
-      tones.appendChild(
-        menuItem(t.name, () => run('style', t.name), t.description)
-      );
-    }
-    menu.appendChild(tones);
+    menu.appendChild(menuItem('Polish', () => run('polish', settings.lastTone, settings.tones)));
   }
 
   function menuItem(label, onClick, title) {
@@ -203,12 +195,14 @@
 
   // ---- Run request ---------------------------------------------------------
 
-  function run(mode, tone) {
+  function run(mode, tone, tones) {
     hideMenu();
     if (!desc) return;
-    state = { mode, tone, resultText: '', streaming: true };
-    openPanel(mode, tone);
-    setStatus(tone ? `Rewriting (${tone})…` : mode === 'grammar' ? 'Fixing grammar…' : 'Polishing…');
+    state = { mode, tone, tones, resultText: '', streaming: true };
+    openPanel(mode, tone, tones);
+    setStatus(tone
+      ? `${mode === 'polish' ? 'Polishing' : 'Rewriting'} (${tone})…`
+      : mode === 'grammar' ? 'Fixing grammar…' : 'Polishing…');
     setResultPlain('');
     setActionsEnabled(false);
 
@@ -261,7 +255,7 @@
 
   // ---- Panel ---------------------------------------------------------------
 
-  function openPanel(mode, tone) {
+  function openPanel(mode, tone, tones) {
     // Show backdrop
     const backdrop = shadow.querySelector('.lh-backdrop');
     if (backdrop) backdrop.hidden = false;
@@ -279,6 +273,30 @@
     head.append(title, spacer, close);
 
     const body = el('div', 'lh-body');
+    if (mode === 'polish') {
+      const toneRow = el('div', 'lh-tone-row');
+      const toneLabel = el('label');
+      toneLabel.textContent = 'Tone';
+      const toneSelect = el('select', 'lh-tone-select');
+      toneSelect.title = 'Tone used when polishing or regenerating';
+      for (const t of (tones || LH.storage.DEFAULT_TONES)) {
+        const option = document.createElement('option');
+        option.value = t.name;
+        option.textContent = t.name;
+        option.selected = t.name === tone;
+        toneSelect.appendChild(option);
+      }
+      toneSelect.addEventListener('change', () => {
+        if (!state) return;
+        state.tone = toneSelect.value;
+        // Changing tone replaces the current result immediately. During an
+        // active request the selector is disabled to avoid overlapping runs.
+        if (!state.streaming) onRegen();
+      });
+      toneLabel.htmlFor = toneSelect.id = 'lh-tone-select';
+      toneRow.append(toneLabel, toneSelect);
+      body.appendChild(toneRow);
+    }
     const legend = el('div', 'lh-legend');
     legend.innerHTML =
       '<span class="lh-chip lh-ins">added</span><span class="lh-chip lh-del">removed</span>';
@@ -363,8 +381,10 @@
     const copy = q('.lh-act[data-act="copy"]');
     const regen = q('.lh-act[data-act="regen"]');
     const cancel = q('.lh-act[data-act="cancel"]');
+    const toneSelect = q('.lh-tone-select');
     if (apply) apply.disabled = !enabled;
     if (copy) copy.disabled = !enabled;
+    if (toneSelect) toneSelect.disabled = !(enabled || retryAvailable);
     if (regen) {
       regen.disabled = !(enabled || retryAvailable);
       regen.textContent = retryAvailable ? 'Retry' : 'Regenerate';
@@ -393,7 +413,7 @@
 
   function onRegen() {
     if (!state) return;
-    run(state.mode, state.tone);
+    run(state.mode, state.tone, state.tones);
   }
 
   function onCancel() {

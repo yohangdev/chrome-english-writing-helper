@@ -24,6 +24,14 @@
     'the level of formality unless it is grammatically necessary.' +
     COMMON_TAIL;
 
+  function polishSystem(tone) {
+    if (!tone) return POLISH;
+    return POLISH.replace(
+      COMMON_TAIL,
+      ` Use a ${String(tone).trim()} tone while polishing.` + COMMON_TAIL
+    );
+  }
+
   function styleSystem(tone) {
     const t = (tone || 'friendly').trim();
     return (
@@ -46,7 +54,7 @@
   function buildMessages(mode, text, tone) {
     let system;
     if (mode === 'grammar') system = GRAMMAR;
-    else if (mode === 'polish') system = POLISH;
+    else if (mode === 'polish') system = polishSystem(tone);
     else system = styleSystem(tone);
 
     // Delimit the user's text so any instructions inside it are treated as data,
