@@ -69,6 +69,9 @@ Store the Base URL **including** its version segment:
 
 ## Privacy & security
 - Selected text is sent to your configured provider **only when you pick an action**.
+- The content script observes selection events, but does not add its Shadow DOM UI
+  to the page until it detects a usable editable selection. Cloudflare challenge
+  frames are excluded entirely.
 - The API key is stored in `chrome.storage.local` — never synced to the cloud, never
   exposed to web pages (all LLM calls go through the background service worker).
 - No storage is encrypted at rest; anyone with access to this browser profile can

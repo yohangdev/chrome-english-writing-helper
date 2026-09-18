@@ -1,7 +1,8 @@
 /**
- * Content script entry. Renders the floating button + action menu + result panel
- * inside a Shadow DOM (style-isolated from the host page), captures the user's
- * selection, talks to the background SW over a Port, and applies the result.
+ * Content script entry. Lazily renders the floating button + action menu +
+ * result panel inside a Shadow DOM (style-isolated from the host page), captures
+ * the user's selection, talks to the background SW over a Port, and applies the
+ * result.
  *
  * Depends (via manifest load order) on: LH.storage, LH.diff, LH.selection,
  * LH.replace, and the vendored helpers.
@@ -20,6 +21,11 @@
   // ---- UI construction -----------------------------------------------------
 
   function buildUI() {
+    // Do not mutate the page until an editable selection actually needs UI.
+    // This is especially important in third-party CAPTCHA, payment, and auth
+    // frames, where an unexpected DOM node can break integrity checks.
+    if (host) return;
+
     host = document.createElement('div');
     host.id = 'lh-writing-helper-host';
     host.style.all = 'initial';
@@ -84,6 +90,7 @@
   }
 
   function eventInsideUI(e) {
+    if (!host) return false;
     const path = e.composedPath ? e.composedPath() : [];
     return path.includes(host);
   }
@@ -97,8 +104,9 @@
       const d = LH.selection.capture();
       if (d) {
         desc = d;
+        buildUI();
         showButton(d.rect);
-      } else if (menu.hidden) {
+      } else if (!menu || menu.hidden) {
         hideButton();
       }
     }, DEBOUNCE_MS);
@@ -117,10 +125,11 @@
   }
 
   function hideButton() {
-    btn.hidden = true;
+    if (btn) btn.hidden = true;
   }
 
   function hideMenu() {
+    if (!menu) return;
     menu.hidden = true;
     menu.innerHTML = '';
   }
@@ -493,5 +502,4 @@
     hideMenu();
   }, true);
 
-  buildUI();
 })();
