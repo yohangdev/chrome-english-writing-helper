@@ -20,6 +20,8 @@ Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
   works as a fallback, **Regenerate** re-runs.
 - Works only on the selected text — never grabs the whole field.
 - Bring-your-own-key: custom base URL, API key, model, temperature, multiple profiles.
+- Versioned JSON backup and restore for provider profiles, style presets, and behavior
+  settings. API keys are excluded unless explicitly included.
 - Optional live streaming of the result.
 
 ## Install (load unpacked)
@@ -48,6 +50,13 @@ Azure, or any custom endpoint). No build step, no npm — plain vanilla JS.
 3. Choose an action, then **Apply to page** (replaces the live selection) or **Copy**.
    Use the tone selector with **Rewrite**, or click **Regenerate** after changing the
    tone. Apply falls back to Copy automatically when the field can't be edited inline.
+
+## Backup and restore
+Open the extension settings and use **Backup & restore** to export or restore a JSON
+file. Export uses the last saved provider values. API keys are excluded by default;
+including them creates a plaintext secret, so keep that file private. Restore replaces
+all current settings. Browser-granted provider host permissions are not part of the
+backup and may need to be granted again through **Save** or **Test connection**.
 
 ## Providers
 Store the Base URL **including** its version segment:

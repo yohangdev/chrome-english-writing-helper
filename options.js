@@ -6,6 +6,8 @@
   const LH = globalThis.LH;
   const $ = (id) => document.getElementById(id);
 
+  const MAX_BACKUP_BYTES = 1024 * 1024;
+
   let settings = null;
   let currentId = null;
 
@@ -99,6 +101,12 @@
 
   function setStatus(text, kind) {
     const s = $('status');
+    s.textContent = text || '';
+    s.className = 'status' + (kind ? ' ' + kind : '');
+  }
+
+  function setBackupStatus(text, kind) {
+    const s = $('backupStatus');
     s.textContent = text || '';
     s.className = 'status' + (kind ? ' ' + kind : '');
   }
@@ -205,6 +213,98 @@
     renderTones();
   }
 
+  async function onExportBackup() {
+    const includeApiKeys = $('includeApiKeys').checked;
+    if (includeApiKeys && !window.confirm(
+      'This backup will contain your API keys in readable plaintext. Keep the file private. Continue?'
+    )) {
+      setBackupStatus('Export cancelled.');
+      return;
+    }
+
+    try {
+      // Read storage again so the backup contains only settings the user saved.
+      const saved = await LH.storage.getSettings();
+      const backup = LH.storage.createBackup(saved, {
+        includeApiKeys,
+        extensionVersion: chrome.runtime.getManifest().version,
+      });
+      const blob = new Blob([JSON.stringify(backup, null, 2) + '\n'], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+      link.href = url;
+      link.download = `english-writing-helper-backup-${stamp}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setBackupStatus(
+        `Exported ${saved.profiles.length} profile(s) and ${saved.tones.length} style preset(s). ` +
+          (includeApiKeys ? 'API keys are included; keep the file private.' : 'API keys were excluded.'),
+        includeApiKeys ? 'warn' : 'ok'
+      );
+    } catch (e) {
+      setBackupStatus('Export failed: ' + ((e && e.message) || String(e)), 'err');
+    }
+  }
+
+  function onRestoreBackup() {
+    const input = $('backupFile');
+    input.value = '';
+    input.click();
+  }
+
+  async function onBackupFileSelected(e) {
+    const input = e.target;
+    const file = input.files && input.files[0];
+    if (!file) return;
+
+    try {
+      if (file.size > MAX_BACKUP_BYTES) {
+        throw new Error('Backup file is larger than 1 MB.');
+      }
+
+      let data;
+      try {
+        data = JSON.parse(await file.text());
+      } catch {
+        throw new Error('The selected file is not valid JSON.');
+      }
+      const parsed = LH.storage.parseBackup(data);
+      const profileCount = parsed.settings.profiles.length;
+      const toneCount = parsed.settings.tones.length;
+      const keyMessage = parsed.includesApiKeys
+        ? 'The file contains API keys, which will be stored locally.'
+        : 'The file has no API keys; restored profiles will have blank keys.';
+      const confirmed = window.confirm(
+        `Restore ${profileCount} profile(s) and ${toneCount} style preset(s)?\n\n` +
+          `This replaces all current settings. ${keyMessage}`
+      );
+      if (!confirmed) {
+        setBackupStatus('Restore cancelled.');
+        return;
+      }
+
+      settings = await LH.storage.replaceSettings(parsed.settings);
+      currentId = settings.activeProfileId;
+      renderProfileSelect();
+      renderForm();
+      renderTones();
+      $('apiKey').type = 'password';
+      $('toggleKey').textContent = 'Show';
+      setStatus('');
+      setBackupStatus(
+        `Restored ${profileCount} profile(s) and ${toneCount} style preset(s).`,
+        'ok'
+      );
+    } catch (err) {
+      setBackupStatus('Restore failed: ' + ((err && err.message) || String(err)), 'err');
+    } finally {
+      input.value = '';
+    }
+  }
+
   // ---- Wire up --------------------------------------------------------------
 
   async function init() {
@@ -237,6 +337,9 @@
     $('newProfile').addEventListener('click', onNewProfile);
     $('deleteProfile').addEventListener('click', onDeleteProfile);
     $('addTone').addEventListener('click', onAddTone);
+    $('exportBackup').addEventListener('click', onExportBackup);
+    $('restoreBackup').addEventListener('click', onRestoreBackup);
+    $('backupFile').addEventListener('change', onBackupFileSelected);
     $('streaming').addEventListener('change', async () => {
       await LH.storage.setSettings({ streaming: $('streaming').checked });
     });

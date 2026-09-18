@@ -91,6 +91,28 @@
         </label>
       </section>
 
+      <section class="card">
+        <h2>Backup &amp; restore</h2>
+        <p class="hint">
+          Export saved provider profiles, style presets, and behavior settings as a
+          JSON file. Save provider changes above before exporting.
+        </p>
+        <label class="checkrow backup-secret">
+          <input id="includeApiKeys" type="checkbox" />
+          <span>Include API keys <strong>(sensitive plaintext)</strong></span>
+        </label>
+        <div class="btnrow">
+          <button id="exportBackup" type="button" class="primary">Export backup</button>
+          <button id="restoreBackup" type="button" class="ghost">Restore from file…</button>
+          <input id="backupFile" type="file" accept=".json,application/json" hidden />
+        </div>
+        <p class="hint backup-note">
+          Restoring replaces all current settings. Browser host permissions are not
+          included; grant them again using Save or Test connection when needed.
+        </p>
+        <p id="backupStatus" class="status" aria-live="polite"></p>
+      </section>
+
       <section class="card note">
         <h2>Privacy</h2>
         <p>

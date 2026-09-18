@@ -185,6 +185,17 @@ button.danger {
   align-items: center;
   gap: 8px;
 }
+.backup-secret {
+  align-items: flex-start;
+  margin-top: 12px;
+}
+.backup-secret strong {
+  color: var(--warn);
+  font-weight: 600;
+}
+.backup-note {
+  margin-bottom: 0;
+}
 
 code {
   background: rgba(127, 127, 127, 0.15);
